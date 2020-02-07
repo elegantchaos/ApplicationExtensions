@@ -44,9 +44,9 @@ public extension UIDocument {
                 return
             }
             
-            let documentPicker = UIDocumentPickerViewController(url: document.fileURL, in: .exportToService)
-            documentPicker.delegate = handler
-            handler.presentPicker(forDocument: document, picker: documentPicker)
+            let picker = UIDocumentPickerViewController(url: document.fileURL, in: .exportToService)
+            picker.delegate = handler
+            handler.presentPicker(picker, forDocument: document)
         }
     }
 
@@ -67,5 +67,5 @@ public protocol DocumentExportHandler: UIDocumentPickerDelegate {
     /// - Parameters:
     ///   - document: the document being exported
     ///   - picker: the picker to display
-    func presentPicker(forDocument document: UIDocument, picker: UIDocumentPickerViewController)
+    func presentPicker(_ picker: UIDocumentPickerViewController, forDocument document: UIDocument)
 }
