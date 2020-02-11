@@ -9,7 +9,7 @@ import LoggerKit
 
 let applicationChannel = Channel("Application", handlers: [OSLogHandler()])
 
-open class BasicApplication: LoggerApplication {
+@available(iOS 13.0, *) open class BasicApplication: LoggerApplication {
     open func open(file url: URL, options: [UIApplication.OpenURLOptionsKey : Any]) -> Bool {
         return false
     }
