@@ -3,6 +3,7 @@
 //  All code (c) 2020 - present day, Elegant Chaos Limited.
 // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
+#if canImport(UIKit)
 import UIKit
 
 public extension UIDocument {
@@ -69,3 +70,4 @@ public protocol DocumentExportHandler: UIDocumentPickerDelegate {
     ///   - picker: the picker to display
     func presentPicker(_ picker: UIDocumentPickerViewController, forDocument document: UIDocument)
 }
+#endif

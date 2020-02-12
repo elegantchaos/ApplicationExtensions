@@ -3,6 +3,7 @@
 //  All code (c) 2020 - present day, Elegant Chaos Limited.
 // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
+#if canImport(UIKit)
 import UIKit
 import Logger
 import LoggerKit
@@ -30,5 +31,4 @@ let applicationChannel = Channel("Application", handlers: [OSLogHandler()])
         }
     }
 }
-
-
+#endif

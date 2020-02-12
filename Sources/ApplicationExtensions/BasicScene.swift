@@ -3,10 +3,10 @@
 //  All code (c) 2020 - present day, Elegant Chaos Limited.
 // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
+#if canImport(UIKit)
 import UIKit
 import LoggerKit
 
 open class BasicScene: LoggerScene {
 }
-
-
+#endif

@@ -1,15 +1,22 @@
 import XCTest
 @testable import ApplicationExtensions
 
+#if canImport(UIKit)
 final class ApplicationExtensionsTests: XCTestCase {
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct
-        // results.
-        XCTAssertEqual(ApplicationExtensions().text, "Hello, World!")
+    func testCacheDirectory() {
+        let url = UIApplication.cacheDirectory()
+        XCTAssertTrue(FileManager.default.fileExists(atPath: url.path))
     }
 
-    static var allTests = [
-        ("testExample", testExample),
-    ]
+    func testDocumentsDirectory() {
+        let url = UIApplication.documentsDirectory()
+        XCTAssertTrue(FileManager.default.fileExists(atPath: url.path))
+    }
+
+    func testNewDocument() {
+        let url = UIApplication.newDocumentURL(withPathExtension: "test")
+        XCTAssertFalse(FileManager.default.fileExists(atPath: url.path))
+        XCTAssertEqual(url.pathExtension, "test")
+    }
 }
+#endif

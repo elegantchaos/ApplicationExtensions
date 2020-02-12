@@ -3,6 +3,7 @@
 //  All code (c) 2020 - present day, Elegant Chaos Limited.
 // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
+#if canImport(UIKit)
 import UIKit
 
 public extension UIApplication {
@@ -39,3 +40,4 @@ public extension UIApplication {
     }
     
 }
+#endif
