@@ -12,7 +12,7 @@ final class ApplicationExtensionsTests: XCTestCase {
     func testDocumentsDirectory() {
         #if canImport(UIKit)
         let url = UIApplication.documentsDirectory()
-        XCTAssertTrue(FileManager.default.fileExists(atPath: url.path))
+        XCTAssertEqual(url.lastPathComponent, "Documents")
         #endif
     }
 
