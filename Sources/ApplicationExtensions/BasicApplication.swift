@@ -11,15 +11,53 @@ import LoggerKit
 let applicationChannel = Channel("Application", handlers: [OSLogHandler()])
 
 @available(iOS 13.0, *) open class BasicApplication: LoggerApplication {
-    open func open(file url: URL, options: [UIApplication.OpenURLOptionsKey : Any]) -> Bool {
+    public typealias LaunchOptions = [UIApplication.LaunchOptionsKey : Any]
+    public typealias OpenOptions = [UIApplication.OpenURLOptionsKey : Any]
+    
+    var isSetup = false
+
+    open func open(file url: URL, options: OpenOptions) -> Bool {
         return false
     }
     
-    open func open(url: URL, options: [UIApplication.OpenURLOptionsKey : Any]) -> Bool {
+    open func open(url: URL, options: OpenOptions) -> Bool {
         return false
     }
 
-    public override func application(_ app: UIApplication, open inputURL: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+    open func setup(withOptions options: LaunchOptions) {
+        registerDefaultsFromSettingsBundle()
+    }
+
+    fileprivate func setupIfNeeded(withOptions options: LaunchOptions) {
+        if !isSetup {
+            setup(withOptions: options)
+            isSetup = true
+        }
+    }
+    
+    // Locates the file representing the root page of the settings for this app and registers the loaded values as the app's defaults.
+    fileprivate func registerDefaultsFromSettingsBundle() {
+        let settingsUrl =
+            Bundle.main.url(forResource: "Settings", withExtension: "bundle")!.appendingPathComponent("Root.plist")
+        let settingsPlist = NSDictionary(contentsOf: settingsUrl)!
+        if let preferences = settingsPlist["PreferenceSpecifiers"] as? [NSDictionary] {
+            var defaultsToRegister = [String: Any]()
+    
+            for prefItem in preferences {
+                guard let key = prefItem["Key"] as? String else {
+                    continue
+                }
+                defaultsToRegister[key] = prefItem["DefaultValue"]
+            }
+            UserDefaults.standard.register(defaults: defaultsToRegister)
+        }
+    }
+    
+
+}
+
+extension BasicApplication { // UIApplicationDelegate
+    override public func application(_ app: UIApplication, open inputURL: URL, options: OpenOptions = [:]) -> Bool {
         if super.application(app, open: inputURL, options: options) {
             return true
         }
@@ -30,5 +68,12 @@ let applicationChannel = Channel("Application", handlers: [OSLogHandler()])
             return open(url: inputURL, options: options)
         }
     }
+    
+    override public func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: LaunchOptions? = nil) -> Bool {
+        setupIfNeeded(withOptions: launchOptions ?? [:])
+
+        return super.application(application, didFinishLaunchingWithOptions: launchOptions)
+    }
 }
+
 #endif
