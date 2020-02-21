@@ -18,93 +18,93 @@ jobs:
         - name: XC Pretty
           run: sudo gem install xcpretty-travis-formatter
         - name: Build (macOS/Debug)
-          run: set -o pipefail; xcodebuild clean build -workspace . -scheme ActionsKit -configuration Debug CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO | tee logs/xcodebuild-macOS-build-debug.log | xcpretty
+          run: set -o pipefail; xcodebuild clean build -workspace . -scheme ApplicationExtensions -configuration Debug CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO | tee logs/xcodebuild-macOS-build-debug.log | xcpretty
         - name: Build (macOS/Release)
-          run: set -o pipefail; xcodebuild clean build -workspace . -scheme ActionsKit -configuration Release CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO | tee logs/xcodebuild-macOS-build-release.log | xcpretty
+          run: set -o pipefail; xcodebuild clean build -workspace . -scheme ApplicationExtensions -configuration Release CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO | tee logs/xcodebuild-macOS-build-release.log | xcpretty
         - name: Test (macOS/Debug)
           run: |
-            GOTPACKAGE=$(xcodebuild -workspace . -list | (grep ActionsKit-Package || true))
+            GOTPACKAGE=$(xcodebuild -workspace . -list | (grep ApplicationExtensions-Package || true))
             echo "*$GOTPACKAGE*"
             if [[ $GOTPACKAGE != "" ]]
             then
-                SCHEME="ActionsKit-Package"
+                SCHEME="ApplicationExtensions-Package"
             else
-                SCHEME="ActionsKit"
+                SCHEME="ApplicationExtensions"
             fi
             set -o pipefail
             xcodebuild test -workspace . -scheme $SCHEME  -configuration Debug CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO  | tee logs/xcodebuild-macOS-test-debug.log | xcpretty
         - name: Test (macOS/Release)
           run: |
-            GOTPACKAGE=$(xcodebuild -workspace . -list | (grep ActionsKit-Package || true))
+            GOTPACKAGE=$(xcodebuild -workspace . -list | (grep ApplicationExtensions-Package || true))
             echo "*$GOTPACKAGE*"
             if [[ $GOTPACKAGE != "" ]]
             then
-                SCHEME="ActionsKit-Package"
+                SCHEME="ApplicationExtensions-Package"
             else
-                SCHEME="ActionsKit"
+                SCHEME="ApplicationExtensions"
             fi
             set -o pipefail
             xcodebuild test -workspace . -scheme $SCHEME  -configuration Release CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ENABLE_TESTABILITY=YES | tee logs/xcodebuild-macOS-test-release.log | xcpretty
         - name: Build (iOS/Debug)
-          run: set -o pipefail; xcodebuild clean build -workspace . -scheme ActionsKit -configuration Debug CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO | tee logs/xcodebuild-iOS-build-debug.log | xcpretty
+          run: set -o pipefail; xcodebuild clean build -workspace . -scheme ApplicationExtensions -configuration Debug CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO | tee logs/xcodebuild-iOS-build-debug.log | xcpretty
         - name: Build (iOS/Release)
-          run: set -o pipefail; xcodebuild clean build -workspace . -scheme ActionsKit -configuration Release CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO | tee logs/xcodebuild-iOS-build-release.log | xcpretty
+          run: set -o pipefail; xcodebuild clean build -workspace . -scheme ApplicationExtensions -configuration Release CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO | tee logs/xcodebuild-iOS-build-release.log | xcpretty
         - name: Test (iOS/Debug)
           run: |
-            GOTPACKAGE=$(xcodebuild -workspace . -list | (grep ActionsKit-Package || true))
+            GOTPACKAGE=$(xcodebuild -workspace . -list | (grep ApplicationExtensions-Package || true))
             echo "*$GOTPACKAGE*"
             if [[ $GOTPACKAGE != "" ]]
             then
-                SCHEME="ActionsKit-Package"
+                SCHEME="ApplicationExtensions-Package"
             else
-                SCHEME="ActionsKit"
+                SCHEME="ApplicationExtensions"
             fi
             set -o pipefail
             xcodebuild test -workspace . -scheme $SCHEME -destination "name=iPhone 11" -configuration Debug CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO  | tee logs/xcodebuild-iOS-test-debug.log | xcpretty
         - name: Test (iOS/Release)
           run: |
-            GOTPACKAGE=$(xcodebuild -workspace . -list | (grep ActionsKit-Package || true))
+            GOTPACKAGE=$(xcodebuild -workspace . -list | (grep ApplicationExtensions-Package || true))
             echo "*$GOTPACKAGE*"
             if [[ $GOTPACKAGE != "" ]]
             then
-                SCHEME="ActionsKit-Package"
+                SCHEME="ApplicationExtensions-Package"
             else
-                SCHEME="ActionsKit"
+                SCHEME="ApplicationExtensions"
             fi
             set -o pipefail
             xcodebuild test -workspace . -scheme $SCHEME -destination "name=iPhone 11" -configuration Release CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ENABLE_TESTABILITY=YES | tee logs/xcodebuild-iOS-test-release.log | xcpretty
         - name: Build (tvOS/Debug)
-          run: set -o pipefail; xcodebuild clean build -workspace . -scheme ActionsKit -configuration Debug CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO | tee logs/xcodebuild-tvOS-build-debug.log | xcpretty
+          run: set -o pipefail; xcodebuild clean build -workspace . -scheme ApplicationExtensions -configuration Debug CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO | tee logs/xcodebuild-tvOS-build-debug.log | xcpretty
         - name: Build (tvOS/Release)
-          run: set -o pipefail; xcodebuild clean build -workspace . -scheme ActionsKit -configuration Release CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO | tee logs/xcodebuild-tvOS-build-release.log | xcpretty
+          run: set -o pipefail; xcodebuild clean build -workspace . -scheme ApplicationExtensions -configuration Release CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO | tee logs/xcodebuild-tvOS-build-release.log | xcpretty
         - name: Test (tvOS/Debug)
           run: |
-            GOTPACKAGE=$(xcodebuild -workspace . -list | (grep ActionsKit-Package || true))
+            GOTPACKAGE=$(xcodebuild -workspace . -list | (grep ApplicationExtensions-Package || true))
             echo "*$GOTPACKAGE*"
             if [[ $GOTPACKAGE != "" ]]
             then
-                SCHEME="ActionsKit-Package"
+                SCHEME="ApplicationExtensions-Package"
             else
-                SCHEME="ActionsKit"
+                SCHEME="ApplicationExtensions"
             fi
             set -o pipefail
             xcodebuild test -workspace . -scheme $SCHEME -destination "name=Apple TV" -configuration Debug CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO  | tee logs/xcodebuild-tvOS-test-debug.log | xcpretty
         - name: Test (tvOS/Release)
           run: |
-            GOTPACKAGE=$(xcodebuild -workspace . -list | (grep ActionsKit-Package || true))
+            GOTPACKAGE=$(xcodebuild -workspace . -list | (grep ApplicationExtensions-Package || true))
             echo "*$GOTPACKAGE*"
             if [[ $GOTPACKAGE != "" ]]
             then
-                SCHEME="ActionsKit-Package"
+                SCHEME="ApplicationExtensions-Package"
             else
-                SCHEME="ActionsKit"
+                SCHEME="ApplicationExtensions"
             fi
             set -o pipefail
             xcodebuild test -workspace . -scheme $SCHEME -destination "name=Apple TV" -configuration Release CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ENABLE_TESTABILITY=YES | tee logs/xcodebuild-tvOS-test-release.log | xcpretty
         - name: Build (watchOS/Debug)
-          run: set -o pipefail; xcodebuild clean build -workspace . -scheme ActionsKit -configuration Debug CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO | tee logs/xcodebuild-watchOS-build-debug.log | xcpretty
+          run: set -o pipefail; xcodebuild clean build -workspace . -scheme ApplicationExtensions -configuration Debug CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO | tee logs/xcodebuild-watchOS-build-debug.log | xcpretty
         - name: Build (watchOS/Release)
-          run: set -o pipefail; xcodebuild clean build -workspace . -scheme ActionsKit -configuration Release CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO | tee logs/xcodebuild-watchOS-build-release.log | xcpretty
+          run: set -o pipefail; xcodebuild clean build -workspace . -scheme ApplicationExtensions -configuration Release CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO | tee logs/xcodebuild-watchOS-build-release.log | xcpretty
         - name: Upload Logs
           uses: actions/upload-artifact@v1
           with:
