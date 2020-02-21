@@ -1,11 +1,9 @@
-//
-//  File.swift
-//  
-//
-//  Created by Developer on 21/02/2020.
-//
+// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+//  Created by Sam Deane on 21/02/20.
+//  All code (c) 2020 - present day, Elegant Chaos Limited.
+// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
-import UIKit
+import Foundation
 
 extension Dictionary {
     public subscript(stringWithKey key: Key) -> String? {
@@ -33,7 +31,7 @@ public struct BundleInfo {
     public let name: String
     public let id: String
     public let executable: String
-    public let icon: UIImage
+    public let icon: Image
     public let build: Int
     public let version: BundleVersion
     public let commit: String
@@ -43,8 +41,8 @@ public struct BundleInfo {
         id = bundle.bundleIdentifier!
         let info = bundle.infoDictionary!
         name = info[stringWithKey: "CFBundleName"] ?? ""
+        icon = Image.imageOrBlank(named: info[stringWithKey: "CFBundleIconName"])
         executable = info[stringWithKey: "CFBundleExecutable"] ?? ""
-        icon = UIImage(named: info[stringWithKey: "CFBundleIconName"]!) ?? UIImage()
         build = info[intWithKey: "CFBundleVersion"] ?? 0
         version = BundleVersion(string: info[stringWithKey:"CFBundleShortVersionString"])
         commit = info[stringWithKey: "Commit"] ?? ""
