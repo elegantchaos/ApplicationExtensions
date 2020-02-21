@@ -10,12 +10,15 @@ import LoggerKit
 
 let applicationChannel = Channel("Application", handlers: [OSLogHandler()])
 
-@available(iOS 13.0, *) open class BasicApplication: LoggerApplication {
+@available(iOS 13.0, tvOS 13.0, *) open class BasicApplication: LoggerApplication {
     public typealias LaunchOptions = [UIApplication.LaunchOptionsKey : Any]
     public typealias OpenOptions = [UIApplication.OpenURLOptionsKey : Any]
-    
-    var isSetup = false
 
+    public let info = BundleInfo()
+
+    var isSetup = false
+    
+    
     open func open(file url: URL, options: OpenOptions) -> Bool {
         return false
     }
@@ -56,8 +59,8 @@ let applicationChannel = Channel("Application", handlers: [OSLogHandler()])
 
 }
 
-extension BasicApplication { // UIApplicationDelegate
-    override public func application(_ app: UIApplication, open inputURL: URL, options: OpenOptions = [:]) -> Bool {
+@available(iOS 13.0, *) extension BasicApplication { // UIApplicationDelegate
+    override open func application(_ app: UIApplication, open inputURL: URL, options: OpenOptions = [:]) -> Bool {
         if super.application(app, open: inputURL, options: options) {
             return true
         }
@@ -69,7 +72,7 @@ extension BasicApplication { // UIApplicationDelegate
         }
     }
     
-    override public func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: LaunchOptions? = nil) -> Bool {
+    override open func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: LaunchOptions? = nil) -> Bool {
         setupIfNeeded(withOptions: launchOptions ?? [:])
 
         return super.application(application, didFinishLaunchingWithOptions: launchOptions)

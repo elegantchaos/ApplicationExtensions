@@ -5,7 +5,7 @@ import PackageDescription
 let package = Package(
     name: "ApplicationExtensions",
     platforms: [
-        .macOS(.v10_13), .iOS(.v12)
+        .macOS(.v10_13), .iOS(.v12), .tvOS(.v13)
     ],
     products: [
         .library(
@@ -13,7 +13,7 @@ let package = Package(
             targets: ["ApplicationExtensions"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/elegantchaos/Logger.git", from: "1.4.2"),
+        .package(url: "https://github.com/elegantchaos/Logger.git", from: "1.5.0"),
     ],
     targets: [
         .target(
