@@ -18,7 +18,6 @@ let applicationChannel = Channel("Application", handlers: [OSLogHandler()])
 
     var isSetup = false
     
-    
     open func open(file url: URL, options: OpenOptions) -> Bool {
         return false
     }
@@ -27,13 +26,17 @@ let applicationChannel = Channel("Application", handlers: [OSLogHandler()])
         return false
     }
 
-    open func setup(withOptions options: LaunchOptions) {
+    open func setUp(withOptions options: LaunchOptions) {
         registerDefaultsFromSettingsBundle()
     }
 
-    fileprivate func setupIfNeeded(withOptions options: LaunchOptions) {
+    open func tearDown() {
+        
+    }
+    
+    fileprivate func setUpIfNeeded(withOptions options: LaunchOptions) {
         if !isSetup {
-            setup(withOptions: options)
+            setUp(withOptions: options)
             isSetup = true
         }
     }
@@ -73,9 +76,14 @@ let applicationChannel = Channel("Application", handlers: [OSLogHandler()])
     }
     
     override open func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: LaunchOptions? = nil) -> Bool {
-        setupIfNeeded(withOptions: launchOptions ?? [:])
+        setUpIfNeeded(withOptions: launchOptions ?? [:])
 
         return super.application(application, didFinishLaunchingWithOptions: launchOptions)
+    }
+    
+    open override func applicationWillTerminate(_ application: UIApplication) {
+        tearDown()
+        super.applicationWillTerminate(application)
     }
 }
 
