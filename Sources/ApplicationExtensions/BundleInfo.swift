@@ -4,26 +4,22 @@
 // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
 import Foundation
-
-extension Dictionary {
-    public subscript(stringWithKey key: Key) -> String? {
-        return self[key] as? String
-    }
-    public subscript(intWithKey key: Key) -> Int? {
-        return self[key] as? Int
-    }
-}
+import CollectionExtensions
 
 public struct BundleVersion {
-    let major: Int
-    let minor: Int
-    let patch: Int
+    public let major: Int
+    public let minor: Int
+    public let patch: Int
     
-    init(string: String? = nil) {
+    public init(string: String? = nil) {
         let numbers = string?.split(separator: ".").map({ Int($0) ?? 0 }) ?? [0,0,0]
         major = numbers.count > 0 ? numbers[0] : 0
         minor = numbers.count > 1 ? numbers[1] : 0
         patch = numbers.count > 2 ? numbers[2] : 0
+    }
+    
+    public var asString: String {
+        return patch == 0 ? "\(major).\(minor)" : "\(major).\(minor).\(patch)"
     }
 }
 
@@ -37,6 +33,9 @@ public struct BundleInfo {
     public let commit: String
     public let copyright: String
     
+    public var versionString: String { version.asString }
+    public var fullVersionString: String { "\(version.asString) (\(build))" }
+        
     init(for bundle: Bundle = Bundle.main) {
         id = bundle.bundleIdentifier!
         let info = bundle.infoDictionary!
