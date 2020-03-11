@@ -14,11 +14,12 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/elegantchaos/Logger.git", from: "1.5.2"),
+        .package(url: "https://github.com/elegantchaos/CollectionExtensions.git", from: "1.0.1"),
     ],
     targets: [
         .target(
             name: "ApplicationExtensions",
-            dependencies: ["LoggerKit"]),
+            dependencies: ["LoggerKit", "CollectionExtensions"]),
         .testTarget(
             name: "ApplicationExtensionsTests",
             dependencies: ["ApplicationExtensions"]),
