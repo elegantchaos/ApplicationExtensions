@@ -43,19 +43,20 @@ let applicationChannel = Channel("Application", handlers: [OSLogHandler()])
     
     // Locates the file representing the root page of the settings for this app and registers the loaded values as the app's defaults.
     fileprivate func registerDefaultsFromSettingsBundle() {
-        let settingsUrl =
-            Bundle.main.url(forResource: "Settings", withExtension: "bundle")!.appendingPathComponent("Root.plist")
-        let settingsPlist = NSDictionary(contentsOf: settingsUrl)!
-        if let preferences = settingsPlist["PreferenceSpecifiers"] as? [NSDictionary] {
-            var defaultsToRegister = [String: Any]()
-    
-            for prefItem in preferences {
-                guard let key = prefItem["Key"] as? String else {
-                    continue
+        if let bundle = Bundle.main.url(forResource: "Settings", withExtension: "bundle") {
+            let settingsUrl = bundle.appendingPathComponent("Root.plist")
+            let settingsPlist = NSDictionary(contentsOf: settingsUrl)!
+            if let preferences = settingsPlist["PreferenceSpecifiers"] as? [NSDictionary] {
+                var defaultsToRegister = [String: Any]()
+        
+                for prefItem in preferences {
+                    guard let key = prefItem["Key"] as? String else {
+                        continue
+                    }
+                    defaultsToRegister[key] = prefItem["DefaultValue"]
                 }
-                defaultsToRegister[key] = prefItem["DefaultValue"]
+                UserDefaults.standard.register(defaults: defaultsToRegister)
             }
-            UserDefaults.standard.register(defaults: defaultsToRegister)
         }
     }
     
