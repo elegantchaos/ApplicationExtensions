@@ -3,17 +3,14 @@
 //  All code (c) 2020 - present day, Elegant Chaos Limited.
 // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
-#if canImport(UIKit)
+import Foundation
 import Bundles
-import UIKit
 import Logger
 import LoggerKit
 
 let applicationChannel = Channel("Application", handlers: [OSLogHandler()])
 
 @available(iOS 13.0, tvOS 13.0, *) open class BasicApplication: LoggerApplication {
-    public typealias LaunchOptions = [UIApplication.LaunchOptionsKey : Any]
-    public typealias OpenOptions = [UIApplication.OpenURLOptionsKey : Any]
 
     public let info = BundleInfo()
 
@@ -64,7 +61,14 @@ let applicationChannel = Channel("Application", handlers: [OSLogHandler()])
 
 }
 
+#if canImport(UIKit)
+
+import UIKit
+
 @available(iOS 13.0, *) extension BasicApplication { // UIApplicationDelegate
+    public typealias LaunchOptions = [UIApplication.LaunchOptionsKey : Any]
+    public typealias OpenOptions = [UIApplication.OpenURLOptionsKey : Any]
+
     override open func application(_ app: UIApplication, open inputURL: URL, options: OpenOptions = [:]) -> Bool {
         if super.application(app, open: inputURL, options: options) {
             return true
@@ -87,6 +91,13 @@ let applicationChannel = Channel("Application", handlers: [OSLogHandler()])
         tearDown()
         super.applicationWillTerminate(application)
     }
+}
+
+#elseif canImport(AppKit)
+
+extension BasicApplication {
+    public typealias LaunchOptions = [String : Any]
+    public typealias OpenOptions = [String : Any]
 }
 
 #endif
