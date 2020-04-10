@@ -6,8 +6,8 @@
         "repositoryURL": "https://github.com/elegantchaos/Bundles.git",
         "state": {
           "branch": null,
-          "revision": "84eb63313e79fd6bbe19e2a972d96a881beb1ec4",
-          "version": "1.0.1"
+          "revision": "e21d9b688841404ed0bcc3921616364f494d1359",
+          "version": "1.0.4"
         }
       },
       {
@@ -15,13 +15,13 @@
         "repositoryURL": "https://github.com/elegantchaos/CollectionExtensions.git",
         "state": {
           "branch": null,
-          "revision": "d38d95d1458f1ef877c72584895da51e1b2d5149",
-          "version": "1.0.1"
+          "revision": "002f744b085c162f37783b8a629ae6364c558c3a",
+          "version": "1.0.2"
         }
       },
       {
         "package": "Files",
-        "repositoryURL": "https://github.com/elegantchaos/Files",
+        "repositoryURL": "https://github.com/elegantchaos/Files.git",
         "state": {
           "branch": null,
           "revision": "fab79dce95afdcc1b7c6983d6874176465bd210a",
@@ -30,7 +30,7 @@
       },
       {
         "package": "Images",
-        "repositoryURL": "https://github.com/elegantchaos/Images",
+        "repositoryURL": "https://github.com/elegantchaos/Images.git",
         "state": {
           "branch": null,
           "revision": "59a9088a3f83e4e074df55e6d74b38cf52ffe75d",
@@ -48,7 +48,7 @@
       },
       {
         "package": "SemanticVersion",
-        "repositoryURL": "https://github.com/elegantchaos/SemanticVersion",
+        "repositoryURL": "https://github.com/elegantchaos/SemanticVersion.git",
         "state": {
           "branch": null,
           "revision": "6bda5a45a2f687a82a0fbb002bee8ad31e44f478",
