@@ -3,7 +3,7 @@
     "pins": [
       {
         "package": "CollectionExtensions",
-        "repositoryURL": "https://github.com/elegantchaos/CollectionExtensions",
+        "repositoryURL": "https://github.com/elegantchaos/CollectionExtensions.git",
         "state": {
           "branch": null,
           "revision": "002f744b085c162f37783b8a629ae6364c558c3a",
@@ -12,16 +12,16 @@
       },
       {
         "package": "Files",
-        "repositoryURL": "https://github.com/elegantchaos/Files",
+        "repositoryURL": "https://github.com/elegantchaos/Files.git",
         "state": {
           "branch": null,
-          "revision": "fab79dce95afdcc1b7c6983d6874176465bd210a",
-          "version": "1.0.4"
+          "revision": "0fc27ae20624324f3a44733412fad9649d588fed",
+          "version": "1.1.3"
         }
       },
       {
         "package": "Images",
-        "repositoryURL": "https://github.com/elegantchaos/Images",
+        "repositoryURL": "https://github.com/elegantchaos/Images.git",
         "state": {
           "branch": null,
           "revision": "59a9088a3f83e4e074df55e6d74b38cf52ffe75d",
@@ -33,17 +33,26 @@
         "repositoryURL": "https://github.com/elegantchaos/Logger.git",
         "state": {
           "branch": null,
-          "revision": "31d5b53ed8e91cadc1a6cdd4f6ddf1998bed841a",
-          "version": "1.5.4"
+          "revision": "e8a0dea5e826a6b3f7d020bd113247274991fb97",
+          "version": "1.5.5"
         }
       },
       {
         "package": "SemanticVersion",
-        "repositoryURL": "https://github.com/elegantchaos/SemanticVersion",
+        "repositoryURL": "https://github.com/elegantchaos/SemanticVersion.git",
         "state": {
           "branch": null,
           "revision": "6bda5a45a2f687a82a0fbb002bee8ad31e44f478",
           "version": "1.1.0"
+        }
+      },
+      {
+        "package": "XCTestExtensions",
+        "repositoryURL": "https://github.com/elegantchaos/XCTestExtensions",
+        "state": {
+          "branch": null,
+          "revision": "15991478b5c9bda527a0a59567ad0fa26940f74c",
+          "version": "1.1.2"
         }
       }
     ]
