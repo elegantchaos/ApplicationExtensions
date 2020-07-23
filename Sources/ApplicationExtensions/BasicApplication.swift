@@ -51,13 +51,13 @@ import LoggerKit
     }
     
     fileprivate func setUpIfNeeded(withOptions options: LaunchOptions) {
-        DispatchQueue.main.async { [self] in
-            if setupState == .launching {
+        DispatchQueue.main.async {
+            if self.setupState == .launching {
                 applicationChannel.log("starting setup")
-                setupState = .initialising
+                self.setupState = .initialising
                 DispatchQueue.global(qos: .userInitiated).async {
-                    setUp(withOptions: options) { _ in
-                        finishedSetup()
+                    self.setUp(withOptions: options) { _ in
+                        self.finishedSetup()
                     }
                 }
             }
@@ -65,10 +65,10 @@ import LoggerKit
     }
     
     fileprivate func finishedSetup() {
-        DispatchQueue.main.async { [self] in
+        DispatchQueue.main.async {
             applicationChannel.log("finished setup")
-            setupState = .ready
-            for action in postSetupActions {
+            self.setupState = .ready
+            for action in self.postSetupActions {
                 applicationChannel.log("performing post setup action")
                 action()
             }
@@ -76,13 +76,13 @@ import LoggerKit
     }
     
     func afterSetup(action: @escaping () -> ()) {
-        DispatchQueue.main.async { [self] in
-            if setupState == .ready {
+        DispatchQueue.main.async {
+            if self.setupState == .ready {
                 applicationChannel.log("performing post setup action immediately")
                 action()
             } else {
                 applicationChannel.log("queuing post setup action")
-                postSetupActions.append(action)
+                self.postSetupActions.append(action)
             }
         }
     }

@@ -19,12 +19,12 @@ open class BasicScene: LoggerScene {
     
     open override func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         sceneChannel.debug("connecting")
-        BasicApplication.shared.afterSetup { [self] in
-                sceneChannel.debug("loading")
-                loadScene(scene, willConnectTo: session, options: connectionOptions) { _,_,_ in
+        BasicApplication.shared.afterSetup {
+            sceneChannel.debug("loading")
+            self.loadScene(scene, willConnectTo: session, options: connectionOptions) { _,_,_ in
                 DispatchQueue.main.async {
                     sceneChannel.debug("loaded")
-                    makeScene(scene, willConnectTo:session, options: connectionOptions)
+                    self.makeScene(scene, willConnectTo:session, options: connectionOptions)
                     sceneChannel.debug("shown")
                 }
             }
