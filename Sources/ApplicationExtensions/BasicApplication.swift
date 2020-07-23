@@ -8,13 +8,21 @@ import Bundles
 import Logger
 import LoggerKit
 
-let applicationChannel = Channel("Application", handlers: [OSLogHandler()])
-
 @available(iOS 13.0, tvOS 13.0, *) open class BasicApplication: LoggerApplication {
+    public enum SetupState {
+        case launching
+        case initialising
+        case ready
+    }
 
+    var setupState: SetupState = .launching
+    var postSetupActions: [() -> ()] = []
+    
+    public typealias SetupCompletion = (LaunchOptions) -> ()
+    
+    public var setupCompletions: [SetupCompletion] = []
     public let info = BundleInfo()
-
-    var isSetup = false
+    
     
     open func open(file url: URL, options: OpenOptions) -> Bool {
         return false
@@ -24,18 +32,61 @@ let applicationChannel = Channel("Application", handlers: [OSLogHandler()])
         return false
     }
 
-    open func setUp(withOptions options: LaunchOptions) {
+    open func setUp(withOptions options: LaunchOptions, completion: @escaping SetupCompletion) {
         registerDefaultsFromSettingsBundle()
+        loadState {
+            applicationChannel.log("finished loading state")
+            completion(options)
+        }
     }
 
     open func tearDown() {
         
     }
     
+    open func loadState(completion: () -> ()) {
+        applicationChannel.log("started loading state")
+        completion()
+    }
+    
+    open func saveState(completion: () -> ()) {
+        
+    }
+    
     fileprivate func setUpIfNeeded(withOptions options: LaunchOptions) {
-        if !isSetup {
-            setUp(withOptions: options)
-            isSetup = true
+        DispatchQueue.main.async { [self] in
+            if setupState == .launching {
+                applicationChannel.log("starting setup")
+                setupState = .initialising
+                DispatchQueue.global(qos: .userInitiated).async {
+                    setUp(withOptions: options) { _ in
+                        finishedSetup()
+                    }
+                }
+            }
+        }
+    }
+    
+    fileprivate func finishedSetup() {
+        DispatchQueue.main.async { [self] in
+            applicationChannel.log("finished setup")
+            setupState = .ready
+            for action in postSetupActions {
+                applicationChannel.log("performing post setup action")
+                action()
+            }
+        }
+    }
+    
+    func afterSetup(action: @escaping () -> ()) {
+        DispatchQueue.main.async { [self] in
+            if setupState == .ready {
+                applicationChannel.log("performing post setup action immediately")
+                action()
+            } else {
+                applicationChannel.log("queuing post setup action")
+                postSetupActions.append(action)
+            }
         }
     }
     

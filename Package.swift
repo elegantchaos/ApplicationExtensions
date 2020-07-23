@@ -5,7 +5,7 @@ import PackageDescription
 let package = Package(
     name: "ApplicationExtensions",
     platforms: [
-        .macOS(.v10_13), .iOS(.v12), .tvOS(.v13)
+        .macOS(.v10_13), .iOS(.v13), .tvOS(.v13)
     ],
     products: [
         .library(
