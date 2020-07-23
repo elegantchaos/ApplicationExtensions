@@ -38,12 +38,16 @@ open class BasicScene: LoggerScene {
     
     open override func sceneWillResignActive(_ scene: UIScene) {
         super.sceneWillResignActive(scene)
-        BasicApplication.shared.saveState()
+        DispatchQueue.global(qos: .background).async {
+            BasicApplication.shared.saveState()
+        }
     }
     
     open override func sceneDidDisconnect(_ scene: UIScene) {
         super.sceneDidDisconnect(scene)
-        BasicApplication.shared.saveState()
+        DispatchQueue.global(qos: .background).async {
+            BasicApplication.shared.saveState()
+        }
     }
 }
 #endif
