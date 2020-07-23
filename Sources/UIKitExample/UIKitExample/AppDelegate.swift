@@ -9,10 +9,12 @@ import UIKit
 
 @main
 class AppDelegate: BasicApplication {
-    override func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: BasicApplication.LaunchOptions? = nil) -> Bool {
+    override func prelaunch() {
+        // force channels on for the sake of seeing what the startup sequence is
+        // (normally you'd leave them at their default configuration, and allow
+        //  the user to configure them with the LoggerMenu)
         applicationChannel.enabled = true
         sceneChannel.enabled = true
-        return super.application(application, didFinishLaunchingWithOptions: launchOptions)
     }
 }
 

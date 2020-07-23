@@ -15,17 +15,11 @@ import LoggerKit
         case ready
     }
 
+    public typealias SetupCompletion = (LaunchOptions) -> ()
     var setupState: SetupState = .launching
     var postSetupActions: [() -> ()] = []
     
-    public typealias SetupCompletion = (LaunchOptions) -> ()
-    
-    public var setupCompletions: [SetupCompletion] = []
     public let info = BundleInfo()
-    
-    public static var shared: BasicApplication {
-        UIApplication.shared.delegate as! BasicApplication
-    }
     
     open func open(file url: URL, options: OpenOptions) -> Bool {
         return false
@@ -119,6 +113,12 @@ import LoggerKit
 
 import UIKit
 
+extension BasicApplication {
+    public static var shared: BasicApplication {
+        UIApplication.shared.delegate as! BasicApplication
+    }
+}
+
 @available(iOS 13.0, *) extension BasicApplication { // UIApplicationDelegate
     public typealias LaunchOptions = [UIApplication.LaunchOptionsKey : Any]
     public typealias OpenOptions = [UIApplication.OpenURLOptionsKey : Any]
@@ -149,7 +149,26 @@ import UIKit
 
 #elseif canImport(AppKit)
 
+import AppKit
+
 extension BasicApplication {
+    public static var shared: BasicApplication {
+        NSApp.delegate as! BasicApplication
+    }
+
+    @objc open func makeWindow() {
+    }
+    
+    open override func applicationDidFinishLaunching(_ notification: Notification) {
+        super.applicationDidFinishLaunching(notification)
+        afterSetup {
+            DispatchQueue.main.async {
+                self.makeWindow()
+            }
+        }
+        setUpIfNeeded(withOptions: notification.userInfo as! LaunchOptions)
+    }
+    
     public typealias LaunchOptions = [String : Any]
     public typealias OpenOptions = [String : Any]
 }
