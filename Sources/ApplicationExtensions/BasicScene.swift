@@ -19,6 +19,10 @@ open class BasicScene: LoggerScene {
     
     open override func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         sceneChannel.debug("connecting")
+
+        super.scene(scene, willConnectTo: session, options: connectionOptions)
+        guard let _ = (scene as? UIWindowScene) else { return }
+
         BasicApplication.shared.afterSetup {
             sceneChannel.debug("loading")
             self.loadScene(scene, willConnectTo: session, options: connectionOptions) { _,_,_ in
@@ -29,6 +33,17 @@ open class BasicScene: LoggerScene {
                 }
             }
         }
+    }
+    
+    
+    open override func sceneWillResignActive(_ scene: UIScene) {
+        super.sceneWillResignActive(scene)
+        BasicApplication.shared.saveState()
+    }
+    
+    open override func sceneDidDisconnect(_ scene: UIScene) {
+        super.sceneDidDisconnect(scene)
+        BasicApplication.shared.saveState()
     }
 }
 #endif

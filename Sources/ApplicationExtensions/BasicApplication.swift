@@ -46,7 +46,7 @@ import LoggerKit
         completion()
     }
     
-    open func saveState(completion: () -> ()) {
+    open func saveState(completion: () -> () = {}) {
         
     }
     
