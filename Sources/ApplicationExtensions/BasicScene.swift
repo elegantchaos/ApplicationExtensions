@@ -10,8 +10,14 @@ import LoggerKit
 open class BasicScene: LoggerScene {
     
     public typealias LoadSceneCompletion = (UIScene, UISceneSession, UIScene.ConnectionOptions) -> ()
-    open func loadScene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions, completion: @escaping LoadSceneCompletion) {
-        completion(scene, session, connectionOptions)
+
+    open func loadState(completion: () -> ()) {
+        sceneChannel.log("started loading state")
+        completion()
+    }
+    
+    open func saveState(completion: () -> () = {}) {
+        sceneChannel.log("started saving state")
     }
     
     open func makeScene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
@@ -25,9 +31,9 @@ open class BasicScene: LoggerScene {
 
         BasicApplication.shared.afterSetup {
             sceneChannel.debug("loading")
-            self.loadScene(scene, willConnectTo: session, options: connectionOptions) { _,_,_ in
+            self.loadState() {
                 DispatchQueue.main.async {
-                    sceneChannel.debug("loaded")
+                    sceneChannel.log("finished loading state")
                     self.makeScene(scene, willConnectTo:session, options: connectionOptions)
                     sceneChannel.debug("shown")
                 }
@@ -35,19 +41,23 @@ open class BasicScene: LoggerScene {
         }
     }
     
-    
-    open override func sceneWillResignActive(_ scene: UIScene) {
-        super.sceneWillResignActive(scene)
+    func saveAllState() {
+        DispatchQueue.global(qos: .background).async {
+            self.saveState()
+        }
         DispatchQueue.global(qos: .background).async {
             BasicApplication.shared.saveState()
         }
     }
+
+    open override func sceneWillResignActive(_ scene: UIScene) {
+        super.sceneWillResignActive(scene)
+        saveAllState()
+    }
     
     open override func sceneDidDisconnect(_ scene: UIScene) {
         super.sceneDidDisconnect(scene)
-        DispatchQueue.global(qos: .background).async {
-            BasicApplication.shared.saveState()
-        }
+        saveAllState()
     }
 }
 #endif
