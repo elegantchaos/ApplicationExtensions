@@ -11,6 +11,7 @@ import UIKit
 class AppDelegate: BasicApplication {
     override func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: BasicApplication.LaunchOptions? = nil) -> Bool {
         applicationChannel.enabled = true
+        sceneChannel.enabled = true
         return super.application(application, didFinishLaunchingWithOptions: launchOptions)
     }
 }

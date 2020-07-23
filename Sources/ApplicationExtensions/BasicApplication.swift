@@ -23,6 +23,9 @@ import LoggerKit
     public var setupCompletions: [SetupCompletion] = []
     public let info = BundleInfo()
     
+    public static var shared: BasicApplication {
+        UIApplication.shared.delegate as! BasicApplication
+    }
     
     open func open(file url: URL, options: OpenOptions) -> Bool {
         return false
