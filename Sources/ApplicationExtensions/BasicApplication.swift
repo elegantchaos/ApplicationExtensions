@@ -16,8 +16,12 @@ import LoggerKit
     }
 
     public typealias SetupCompletion = (LaunchOptions) -> ()
+    public typealias LoadStateCompletion = () -> ()
+    public typealias SaveStateCompletion = () -> ()
+    public typealias PostSetupAction = () -> ()
+    
     var setupState: SetupState = .launching
-    var postSetupActions: [() -> ()] = []
+    var postSetupActions: [PostSetupAction] = []
     
     public let info = BundleInfo()
     
@@ -41,12 +45,12 @@ import LoggerKit
         
     }
     
-    open func loadState(completion: () -> ()) {
+    open func loadState(completion: @escaping LoadStateCompletion) {
         applicationChannel.log("started loading state")
         completion()
     }
     
-    open func saveState(completion: () -> () = {}) {
+    open func saveState(completion: @escaping SaveStateCompletion = {}) {
         
     }
     
@@ -75,7 +79,7 @@ import LoggerKit
         }
     }
     
-    func afterSetup(action: @escaping () -> ()) {
+    func afterSetup(action: @escaping PostSetupAction) {
         DispatchQueue.main.async {
             if self.setupState == .ready {
                 applicationChannel.log("performing post setup action immediately")
