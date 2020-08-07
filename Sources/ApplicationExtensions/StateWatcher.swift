@@ -6,7 +6,7 @@
 import Combine
 import Foundation
 
-public class StateWatcher<Model> where Model: ObservableObject {
+@available(macOS 10.15, iOS 13, tvOS 13, *) public class StateWatcher<Model> where Model: ObservableObject {
     let model: Model
     let scheduler: RunLoop
     let delay: TimeInterval
