@@ -8,7 +8,8 @@ import UIKit
 import LoggerKit
 
 open class BasicScene: LoggerScene {
-    
+    let application = BasicApplication.shared
+
     public typealias LoadSceneCompletion = (UIScene, UISceneSession, UIScene.ConnectionOptions) -> ()
 
     open func loadState(completion: () -> ()) {
@@ -29,7 +30,7 @@ open class BasicScene: LoggerScene {
         super.scene(scene, willConnectTo: session, options: connectionOptions)
         guard let _ = (scene as? UIWindowScene) else { return }
 
-        BasicApplication.shared.afterSetup {
+        application.afterSetup {
             sceneChannel.debug("loading")
             self.loadState() {
                 DispatchQueue.main.async {
@@ -46,7 +47,7 @@ open class BasicScene: LoggerScene {
             self.saveState()
         }
         DispatchQueue.global(qos: .background).async {
-            BasicApplication.shared.saveState()
+            self.application.saveState()
         }
     }
 
