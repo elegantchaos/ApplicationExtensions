@@ -21,6 +21,8 @@ import Foundation
         self.observer = model
             .objectWillChange
             .debounce(for: .seconds(delay), scheduler: scheduler)
-            .sink { _ in action() }
+            .sink {
+                _ in action()
+            }
     }
 }
