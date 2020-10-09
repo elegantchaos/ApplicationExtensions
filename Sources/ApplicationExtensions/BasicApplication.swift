@@ -55,7 +55,7 @@ import LoggerKit
     }
     
     fileprivate func setUpIfNeeded(withOptions options: LaunchOptions) {
-        DispatchQueue.main.async {
+        onMainQueue {
             if self.setupState == .launching {
                 applicationChannel.log("starting setup")
                 self.setupState = .initialising
@@ -69,7 +69,7 @@ import LoggerKit
     }
     
     fileprivate func finishedSetup() {
-        DispatchQueue.main.async {
+        onMainQueue {
             applicationChannel.log("finished setup")
             self.setupState = .ready
             for action in self.postSetupActions {
@@ -80,7 +80,7 @@ import LoggerKit
     }
     
     func afterSetup(action: @escaping PostSetupAction) {
-        DispatchQueue.main.async {
+        onMainQueue {
             if self.setupState == .ready {
                 applicationChannel.log("performing post setup action immediately")
                 action()
@@ -166,7 +166,7 @@ extension BasicApplication {
     open override func applicationDidFinishLaunching(_ notification: Notification) {
         super.applicationDidFinishLaunching(notification)
         afterSetup {
-            DispatchQueue.main.async {
+            onMainQueue {
                 self.makeWindow()
             }
         }

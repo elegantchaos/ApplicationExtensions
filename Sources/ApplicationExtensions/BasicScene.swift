@@ -33,7 +33,7 @@ open class BasicScene: LoggerScene {
         application.afterSetup {
             sceneChannel.debug("loading")
             self.loadState() {
-                DispatchQueue.main.async {
+                onMainQueue {
                     sceneChannel.log("finished loading state")
                     self.makeScene(scene, willConnectTo:session, options: connectionOptions)
                     sceneChannel.debug("shown")
