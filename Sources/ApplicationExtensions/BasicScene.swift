@@ -9,7 +9,8 @@ import LoggerKit
 
 open class BasicScene: LoggerScene {
     let application = BasicApplication.shared
-
+    var isConnected = false
+    
     public typealias LoadSceneCompletion = (UIScene, UISceneSession, UIScene.ConnectionOptions) -> ()
 
     open func loadState(completion: () -> ()) {
@@ -41,6 +42,7 @@ open class BasicScene: LoggerScene {
                 onMainQueue {
                     sceneChannel.log("finished loading state")
                     self.makeScene(scene, willConnectTo:session, options: connectionOptions)
+                    self.isConnected = true
                     sceneChannel.debug("shown")
                 }
             }
@@ -77,7 +79,9 @@ open class BasicScene: LoggerScene {
     
     open override func sceneWillEnterForeground(_ scene: UIScene) {
         super.sceneWillEnterForeground(scene)
-        refreshAllState()
+        if isConnected {
+            refreshAllState()
+        }
     }
 }
 #endif
