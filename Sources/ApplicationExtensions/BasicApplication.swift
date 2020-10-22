@@ -51,7 +51,14 @@ import LoggerKit
     }
     
     open func saveState(completion: @escaping SaveStateCompletion = {}) {
-        
+        applicationChannel.log("started saving state")
+        completion()
+
+    }
+    
+    open func refreshState(completion: @escaping LoadStateCompletion = {}) {
+        applicationChannel.log("started refreshing state")
+        completion()
     }
     
     fileprivate func setUpIfNeeded(withOptions options: LaunchOptions) {
@@ -139,15 +146,23 @@ extension BasicApplication {
         }
     }
     
-    override open func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: LaunchOptions? = nil) -> Bool {
-        setUpIfNeeded(withOptions: launchOptions ?? [:])
+    override open func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: LaunchOptions? = nil) -> Bool {
+        let result = super.application(application, willFinishLaunchingWithOptions: launchOptions)
+        if result {
+            setUpIfNeeded(withOptions: launchOptions ?? [:])
+        }
 
-        return super.application(application, didFinishLaunchingWithOptions: launchOptions)
+        return result
     }
     
     open override func applicationWillTerminate(_ application: UIApplication) {
         tearDown()
         super.applicationWillTerminate(application)
+    }
+    
+    open override func applicationWillEnterForeground(_ application: UIApplication) {
+        refreshState {
+        }
     }
 }
 

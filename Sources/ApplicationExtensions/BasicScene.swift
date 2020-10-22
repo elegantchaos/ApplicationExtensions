@@ -17,6 +17,11 @@ open class BasicScene: LoggerScene {
         completion()
     }
     
+    open func refreshState(completion: () -> () = {}) {
+        sceneChannel.log("started refreshing state")
+        completion()
+    }
+    
     open func saveState(completion: () -> () = {}) {
         sceneChannel.log("started saving state")
     }
@@ -42,6 +47,15 @@ open class BasicScene: LoggerScene {
         }
     }
     
+    func refreshAllState() {
+        DispatchQueue.global(qos: .background).async {
+            self.refreshState()
+        }
+        DispatchQueue.global(qos: .background).async {
+            self.application.refreshState()
+        }
+    }
+    
     func saveAllState() {
         DispatchQueue.global(qos: .background).async {
             self.saveState()
@@ -59,6 +73,11 @@ open class BasicScene: LoggerScene {
     open override func sceneDidDisconnect(_ scene: UIScene) {
         super.sceneDidDisconnect(scene)
         saveAllState()
+    }
+    
+    open override func sceneWillEnterForeground(_ scene: UIScene) {
+        super.sceneWillEnterForeground(scene)
+        refreshAllState()
     }
 }
 #endif
