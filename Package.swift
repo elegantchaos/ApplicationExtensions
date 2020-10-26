@@ -13,7 +13,7 @@ let package = Package(
             targets: ["ApplicationExtensions"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/elegantchaos/Bundles.git", from: "1.0.5"),
+        .package(url: "https://github.com/elegantchaos/Bundles.git", from: "1.0.6"),
         .package(url: "https://github.com/elegantchaos/CollectionExtensions.git", from: "1.0.2"),
         .package(url: "https://github.com/elegantchaos/Logger.git", from: "1.5.6"),
     ],
