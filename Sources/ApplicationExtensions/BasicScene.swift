@@ -8,23 +8,21 @@ import UIKit
 import LoggerKit
 
 open class BasicScene: LoggerScene {
-    let application = BasicApplication.shared
+    public let stateQueue = DispatchQueue.global(qos: .background)
     var isConnected = false
     
     public typealias LoadSceneCompletion = (UIScene, UISceneSession, UIScene.ConnectionOptions) -> ()
 
-    open func loadState(completion: () -> ()) {
-        sceneChannel.log("started loading state")
+    open func loadState(completion: @escaping () -> ()) {
         completion()
     }
     
-    open func refreshState(completion: () -> () = {}) {
-        sceneChannel.log("started refreshing state")
+    open func refreshState(completion: @escaping () -> () = {}) {
         completion()
     }
     
-    open func saveState(completion: () -> () = {}) {
-        sceneChannel.log("started saving state")
+    open func saveState(completion: @escaping () -> () = {}) {
+        completion()
     }
     
     open func makeScene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
@@ -36,11 +34,11 @@ open class BasicScene: LoggerScene {
         super.scene(scene, willConnectTo: session, options: connectionOptions)
         guard let _ = (scene as? UIWindowScene) else { return }
 
-        application.afterSetup {
+        BasicApplication.shared.afterSetup {
             sceneChannel.debug("loading")
             self.loadState() {
                 onMainQueue {
-                    sceneChannel.log("finished loading state")
+                    sceneChannel.log("finished loading")
                     self.makeScene(scene, willConnectTo:session, options: connectionOptions)
                     self.isConnected = true
                     sceneChannel.debug("shown")
@@ -50,20 +48,48 @@ open class BasicScene: LoggerScene {
     }
     
     func refreshAllState() {
-        DispatchQueue.global(qos: .background).async {
-            self.refreshState()
+        let application = BasicApplication.shared
+        let group = DispatchGroup()
+
+        group.enter()
+        stateQueue.async {
+            self.refreshState() {
+                group.leave()
+            }
         }
-        DispatchQueue.global(qos: .background).async {
-            self.application.refreshState()
+        
+        group.enter()
+        stateQueue.async {
+            application.refreshState() {
+                group.leave()
+            }
+        }
+        
+        group.notify(queue: .main) {
+            sceneChannel.log("Done refreshing all state.")
         }
     }
     
     func saveAllState() {
-        DispatchQueue.global(qos: .background).async {
-            self.saveState()
+        let application = BasicApplication.shared
+        let group = DispatchGroup()
+
+        group.enter()
+        stateQueue.async {
+            self.saveState() {
+                group.leave()
+            }
         }
-        DispatchQueue.global(qos: .background).async {
-            self.application.saveState()
+
+        group.enter()
+        stateQueue.async {
+            application.saveState() {
+                group.leave()
+            }
+        }
+
+        group.notify(queue: .main) {
+            sceneChannel.log("Done saving all state.")
         }
     }
 
