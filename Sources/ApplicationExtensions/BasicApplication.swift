@@ -9,6 +9,16 @@ import Logger
 import LoggerKit
 
 @available(iOS 13.0, tvOS 13.0, *) open class BasicApplication: LoggerApplication {
+    #if canImport(UIKit)
+    open class var shared: BasicApplication {
+        UIApplication.shared.delegate as! BasicApplication
+    }
+    #elseif canImport(AppKit)
+    open class var shared: BasicApplication {
+        NSApp.delegate as! BasicApplication
+    }
+    #endif
+    
     public enum SetupState {
         case launching
         case initialising
@@ -125,9 +135,6 @@ import LoggerKit
 import UIKit
 
 extension BasicApplication {
-    public static var shared: BasicApplication {
-        UIApplication.shared.delegate as! BasicApplication
-    }
 }
 
 @available(iOS 13.0, *) extension BasicApplication { // UIApplicationDelegate
@@ -171,10 +178,6 @@ extension BasicApplication {
 import AppKit
 
 extension BasicApplication {
-    public static var shared: BasicApplication {
-        NSApp.delegate as! BasicApplication
-    }
-
     @objc open func makeWindow() {
     }
     
